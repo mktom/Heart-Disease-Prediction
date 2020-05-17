@@ -57,7 +57,7 @@ Various Machine Learning Models were analysed and were trained and tested with t
 
 The trained models can be regenerated and stored in backend by calling ```store_all()``` method available in ```ml.py```
 
-```$ cd cs9321-ass3/server```<br/>
+```$ cd /server```<br/>
 ```$ python3 -c 'import ml; ml.store_all()'```
 
 ### Authors
