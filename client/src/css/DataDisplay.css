@@ -1,0 +1,21 @@
+.datadisplay-male-body-div {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+.datadisplay-female-body-div {
+    padding-left: 5%;
+    padding-right: 5%;
+}
+
+.datadisplay-progress-div {
+    padding: 5%;
+    text-align: center;
+}
+
+.datadisplay-male  {
+    padding: 1%;
+}
+
+.datadisplay-female  {
+    padding: 1%;
+}

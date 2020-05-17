@@ -1,0 +1,125 @@
+form {
+    /* width: 100%; */
+    display: grid;
+    box-sizing: border-box;
+}
+
+.error-message {
+  background-color: #ff7272;
+  color: white;
+  padding: 1em;
+}
+.datapred-btn-div {
+    margin: 5px;
+    display: inline;
+}
+
+.datapred-btn2-div {
+    margin: 5px;
+    display: inline;
+}
+
+.datapred-btn-hide {
+    display: inline;
+}
+
+.hide {
+    display:none;
+}
+
+.datapred-div {
+    /* width: 100%; */
+    box-sizing: border-box;
+    text-align: center;
+}
+
+
+.datapred-form {
+    text-align: center;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+    padding: 20px;
+    margin: 40px;
+    /* width: 100%; */
+    box-sizing: border-box;
+}
+
+.col-25 {
+  float: left;
+  box-sizing: border-box;
+  width: 25%;
+  margin-top: 6px;
+  text-align: left;
+}
+
+.col-75 {
+  float: left;
+  box-sizing: border-box;
+  width: 75%;
+  margin-top: 6px;
+}
+
+.datapred-form-heading{
+
+}
+
+.datapred-table-div {
+    width: 90%;
+    display: block;
+}
+
+.datapred-field {
+    
+}
+.form-group {
+    box-sizing: border-box;
+}
+
+.MuiTable-root-131 {
+    border-collapse: collapse;
+    width: 90%;
+    margin: 40px;
+    box-sizing: border-box;
+}
+
+table{
+    width: 90%;
+    margin: 40px;
+    box-sizing: border-box;
+}
+.datapred-table {
+    display: grid;
+    box-sizing: border-box;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 40px;
+    width: 90%;
+}
+
+.datapred-table-head {
+    background-color: black;
+    box-sizing: border-box;
+    color:white;
+}
+
+.datapred-table-head .datapred-table-row{
+    
+}
+
+.datapred-table-body .datapred-table-row{
+    padding: 20px;
+    margin: 20px;
+}
+
+.datapred-table-head .datapred-table-cell {
+    text-align: center;
+    color: white;
+    padding: 20px;
+    margin: 20px;
+}
+
+.datapred-table-body .datapred-table-cell {
+    text-align: center;
+    padding: 20px;
+    margin: 20px;
+}

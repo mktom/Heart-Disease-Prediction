@@ -1,0 +1,16 @@
+{
+  "name": "CS9321-19T1-Assignment-3",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "nodemon": "^1.18.6",
+    "react-scripts": "^2.1.1",
+    "yarn": "^1.12.3",
+    "concurrently": "^3.5.1"
+  },
+  "scripts": {
+    "client": "cd client && yarn start",
+    "server": "cd server && python3 server.py",
+    "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+  }
+}

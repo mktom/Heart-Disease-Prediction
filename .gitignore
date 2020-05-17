@@ -1,0 +1,9 @@
+node_modules/
+*.log
+*.pyc
+*.pkl
+*.db
+*.swp
+*.png
+.vscode 
+pyvrt/
