@@ -1,4 +1,4 @@
-requests==2.18.4
+requests==2.20.0
 Flask==1.0.2
 flask-restplus==0.12.1
 pandas==0.24.2
