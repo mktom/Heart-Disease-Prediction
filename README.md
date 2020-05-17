@@ -9,14 +9,13 @@ To install all dependencies, execute the following (or equivalent):
 sudo yarn install
 cd client
 sudo yarn install
-cd ../server
-sudo pip install -r requirements
+cd server
+python -m pip install -r requirements
 ```
 
 To then run the application, execute the following (or equivalent):
 ```
-cd ~/cs9321-ass3
-sudo yarn start
+yarn start
 ```
 
 The Web Application will be running on ```localhost:3000``` and the Flask Backend server on ```localhost:5000```

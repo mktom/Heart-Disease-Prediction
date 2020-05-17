@@ -10,7 +10,7 @@
   },
   "scripts": {
     "client": "cd client && yarn start",
-    "server": "cd server && python3 server.py",
+    "server": "cd server && python server.py",
     "start": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   }
 }

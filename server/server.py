@@ -12,6 +12,7 @@ Description:
 
 import sys, json, re, requests, csv, platform, sqlite3, os, shutil
 import matplotlib.pyplot as pypl
+from pathlib import Path
 from flask import *
 from flask_restplus import *
 from flask_sqlalchemy import *
@@ -46,7 +47,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHMEY_COMMIT_ON_TEARDOWN'] = True
 db = SQLAlchemy(app)
 marsh = Marshmallow(app)
-logging.basicConfig(filename='Task_Two_Report.log', level=logging.INFO)
+
+Path(os.path.dirname(os.path.abspath(__file__)) + f"/images").mkdir(parents=True, exist_ok=True)
 
 def build_db(nwdb_file):
     try:
@@ -137,6 +139,7 @@ def cln_dta():
     return pandas.DataFrame.from_records(prt_rw)
 
 def mdl_selc():
+    report = open('Task_Two_Report.log', 'w')
     y_val = pnda_data['target']
     x_val = pnda_data.drop(columns='target')
 
@@ -154,7 +157,7 @@ def mdl_selc():
     best_mn = 0
     best_mdl = ''
 
-    logging.info("-*"*22)
+    report.write("-*"*22)
     for ky in mdls.keys():
         kfld = model_selection.KFold(n_splits=10, random_state=10)
         if ky == 'LogReg':
@@ -163,11 +166,11 @@ def mdl_selc():
         else:
             cv_res = model_selection.cross_val_score(mdls[ky](), x_trn, y_trn, cv=kfld, scoring='accuracy')
         res.append(cv_res)
-        logging.info(f"Name: {ky}  Mean: {cv_res.mean()} STD: {cv_res.std()}")
+        report.write(f"Name: {ky}  Mean: {cv_res.mean()} STD: {cv_res.std()}")
         if cv_res.mean() > best_mn:
             best_mdl = ky
             best_mn = cv_res.mean()
-    logging.info("\n")
+    report.write("\n")
 
     nw_fig = pypl.figure()
     ax = nw_fig.add_subplot(111)
@@ -175,11 +178,11 @@ def mdl_selc():
     pypl.xticks(ticks=list(range(1, len(mdls.keys()) + 1)), labels=list(mdls.keys()))
     pypl.ylabel("Percentage")
     pypl.suptitle("Performance of Selected SciLearn Models on Heart Disease Data")
-    nw_fig.savefig('plot_performance_scilearn_models.png', dpi=100)
+    nw_fig.savefig('images/plot_performance_scilearn_models.png', dpi=100)
 
-    logging.info(f"This is the best model: {best_mdl}\n")
-    logging.info(f"This is the best mean: {best_mn}\n")
-    logging.info("-*"*22)
+    report.write(f"This is the best model: {best_mdl}\n")
+    report.write(f"This is the best mean: {best_mn}\n")
+    report.write("-*"*22)
 
     rand_for = RandomForestClassifier()
     rand_for.fit(x_trn, y_trn)
@@ -188,7 +191,9 @@ def mdl_selc():
     feat_imp = pandas.DataFrame(rand_for.feature_importances_, index=x_trn.columns,
                                     columns=['importance']).sort_values('importance', ascending=False)
 
-    logging.info("Feature Importance using Random Forest:\n", feat_imp, "\n-*"*22)
+    report.write(f"Feature Importance using Random Forest:\n{feat_imp}")
+    report.write("\n-*"*22)
+    report.close()
     return mdls, best_mdl, feat_imp, y_val
 
 def prscn_chk():
@@ -197,6 +202,7 @@ def prscn_chk():
     i = 1
     prsc_y_vl = y_val
     fnl_feat = []
+    report = open('Task_Two_Report.log', 'w')
 
     while i <= feat_imp.shape[0] + 1:
         prsc_x_vl = pnda_data[list(feat_imp.index.values[:i])]
@@ -234,30 +240,30 @@ def prscn_chk():
                             f"variable{'s' if len(list(prsc_x_vl)) != 1 else ''}")
 
         if curr_acc - prsc_acc[-1][0] >= 0:
-            logging.info("-*" * 22)
-            logging.info(f"Columns considered from Feature_Importance: {list(prsc_x_vl)}\n")
-            logging.info(f"Accuracy Report: {curr_acc}\n")
-            logging.info(f"Difference between current and precious precision: {curr_acc - prsc_acc[-1][0]}\n")
+            report.write("-*" * 22)
+            report.write(f"Columns considered from Feature_Importance: {list(prsc_x_vl)}\n")
+            report.write(f"Accuracy Report: {curr_acc}\n")
+            report.write(f"Difference between current and precious precision: {curr_acc - prsc_acc[-1][0]}\n")
             prsc_acc.append((curr_acc, f'plot_Accuracy_at_{prsc_acc[-1][0]}.png'))
-            sct_fig.savefig(f'plot_Accuracy_at_{prsc_acc[-1][0]:.3f}.png', dpi=100)
-            logging.info("Confusion Matrix:\n", confusion_matrix(y_vldtn, prdtn), "\n")
-            logging.info("Classification Matrix\n:", classification_report(y_vldtn, prdtn), "\n")
-            logging.info("-*" * 22)
+            sct_fig.savefig(f'images/plot_Accuracy_at_{prsc_acc[-1][0]:.3f}.png', dpi=100)
+            report.write(f"Confusion Matrix:\n{confusion_matrix(y_vldtn, prdtn)}\n")
+            report.write(f"Classification Matrix\n:{classification_report(y_vldtn, prdtn)}\n")
+            report.write("-*" * 22)
         else:
             fnl_feat = list(prsc_x_vl)[:-1]
-            logging.info("-*" * 22)
-            logging.info(f"Columns considered from Feature_Importance: {list(prsc_x_vl)}\n")
-            logging.info(f"Accuracy Report: {curr_acc}\n")
-            logging.info(f"Difference between current and precious precision: {curr_acc - prsc_acc[-1][0]}\n")
-            logging.info("Confusion Matrix:\n", confusion_matrix(y_vldtn, prdtn), "\n")
-            logging.info("Classification Matrix\n:", classification_report(y_vldtn, prdtn), "\n")
-            logging.info(f"The precision at this attribute has not improved the model any further, and therefore, "
+            report.write("-*" * 22)
+            report.write(f"Columns considered from Feature_Importance: {list(prsc_x_vl)}\n")
+            report.write(f"Accuracy Report: {curr_acc}\n")
+            report.write(f"Difference between current and precious precision: {curr_acc - prsc_acc[-1][0]}\n")
+            report.write(f"Confusion Matrix:\n{confusion_matrix(y_vldtn, prdtn)}\n")
+            report.write(f"Classification Matrix\n:{classification_report(y_vldtn, prdtn)}\n")
+            report.write(f"The precision at this attribute has not improved the model any further, and therefore, "
                          f"the most important features are {[nem_ex[rep] for rep in fnl_feat]}.")
-            logging.info("-*" * 22)
+            report.write("-*" * 22)
             break
 
         i += 1
-    logging.shutdown()
+    report.close()
     return [nem_ex[rep] for rep in fnl_feat], prsc_acc[1:]
 
 @ns.route('/')
